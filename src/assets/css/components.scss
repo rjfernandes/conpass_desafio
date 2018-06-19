@@ -1,0 +1,151 @@
+$darkGray: #4a4a4a;
+$lightBlue: #12c1c7;
+$darkBlue: #0e9a9f;
+$bkgRoundColor: #e8e8e8;
+
+/**
+ *  Base Conpass Layout
+ */
+
+ div.conpassLayout {
+    .logoHeader {
+        text-align: center;
+        padding: 3em 0;
+    }
+    .graySection {
+        background: linear-gradient(#f2f2f2,#f9f9f9 );
+
+        .topBottomMargins {
+            margin: 3.5em 0 2em 0;
+        }
+
+        .body {
+            padding: 2em 1em;
+            height: 1000px;
+            .title {
+                letter-spacing: -1px;
+                font-weight: 300;
+                font-size: 34px;
+                color: $darkGray;
+            }
+            .center {
+                text-align: center
+            }
+            .zeroPadding {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
+}
+
+.baseButton {
+    color: white;
+    font-weight: bold;
+    &:hover {
+        color: white;
+        text-decoration: none;
+    }
+}
+
+.blueButton {
+    background-color: $lightBlue;
+    border-bottom-color: $darkBlue;
+    border-bottom-width: 2px;
+    font-size: 14px;
+    padding: 6px 20px;
+}
+
+.greenButton {
+    font-size: 18px;
+    padding: 10px 30px;
+    text-transform: uppercase;  
+    background-color: #30cf94;
+}
+
+.disabledButton {
+    font-size: 18px;
+    padding: 10px 30px;
+    background-color: #ddd;
+    color: #999;
+    &:hover {
+        color: #999;
+        text-decoration: none;
+    }
+}
+
+.blueBorderInput {
+    border-color: $lightBlue;
+}
+
+
+/**
+* Input
+*/
+
+.errorField {
+    color: #da3f52;
+    font-style: italic;
+}
+
+
+/**
+ * Avatar
+ */
+ .avatarImage {
+    border-radius: 50%;
+    background-color: $bkgRoundColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .text {
+        color: $darkGray;
+        text-align: center;
+        font-size: 14px;
+    }
+}
+
+/**
+ * Stepper
+ */
+
+ .conpassStepper {
+    position: relative;
+    // background: red;
+    height: 46px;
+    overflow: hidden;
+
+    .middleLine {
+        position: absolute;
+        padding: 2px;
+        top: 50%;
+        left: 30px;
+        width: 100%;
+        background: $bkgRoundColor;
+    }
+
+    .inline {
+        float:left;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        margin-left: 16px;
+    }
+    .rounded {
+        border-radius: 50% !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+    }
+
+    .full {
+        background: #b8e986; 
+    }
+
+    .empty {
+        background: $bkgRoundColor;
+    }
+
+ }

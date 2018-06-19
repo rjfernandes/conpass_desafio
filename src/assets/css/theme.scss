@@ -1,0 +1,89 @@
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css');
+@import url('https://use.fontawesome.com/releases/v5.0.13/css/all.css');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400');
+@import 'components';
+
+$darkGray: #4a4a4a;
+$lightBlue: #12c1c7;
+$darkBlue: #0e9a9f;
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+/**
+ *  User List 
+ */
+.userList {
+    tr.userListHeader {
+        th {
+            border-top: none;
+            font-size: 15px;
+            font-weight: bold;
+            
+            .text {
+                color: $darkBlue;
+            }
+
+            .link {
+                cursor: pointer;
+            }
+            
+            &.userListSmallColumn {
+                width: 180px;
+            }
+        }
+    }
+
+    .middleCell {
+        vertical-align: middle !important;
+    }
+
+    .nameCell {
+        color: #555e5e;
+    }
+
+    .createAtCell {
+        color: #8b9191;
+    }
+}
+
+/**
+ * User Add
+ */
+
+.userAdd {
+    max-width: 500px;
+}
+
+
+/**
+ *  Upload Image
+ */
+
+.userUploadImage {
+
+    .centerPage {
+        text-align: center;
+    }
+
+
+    .pictureFinishButton {
+        width: 270px;
+        overflow: auto;
+        margin: 0 auto;
+        position: relative;
+
+        .backLink {
+            position: absolute;
+            left: 0;
+            top: 14px;
+            color: $darkGray;
+            &:hover {
+                color: $darkGray;
+                text-decoration: none;
+            }
+        }
+    }
+}
+
