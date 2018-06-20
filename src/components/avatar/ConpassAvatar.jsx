@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const ConpassAvatar = props => {
 
     const getInitials = value => {
-        const partsValue = value.split(' ')
+        const partsValue = (value || '').trim().toUpperCase().split(' ')
 
         const firstPart = partsValue[0]
 
@@ -18,16 +18,17 @@ const ConpassAvatar = props => {
     }
 
     const style = {...{width: props.width, height: props.width }, ...props.style }
+    const className = `avatarImage ${props.className || ''}`
 
     if (props.image) {
-        return <img className="avatarImage" style={style} alt="" src={props.image} />
+        return <img className={className} style={style} alt="" src={props.image} />
     }
 
-    const initials = props.value && getInitials(props.value)
+    const initials = getInitials(props.value)
 
     return ( 
-        <div className="avatarImage" style={style}>
-            <div className="text" style={{ fontSize: initials && props.width * 0.5}}>{ initials || props.instructions }</div>
+        <div className={className} style={style}>
+            <div className="text" style={{ fontSize: props.width * 0.5}}>{ initials }</div>
         </div>
     )
 }

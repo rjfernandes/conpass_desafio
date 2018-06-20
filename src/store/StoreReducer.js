@@ -1,17 +1,14 @@
 import StoreAction from './StoreAction'
 
-const initialState = { users: [] }
+const users = JSON.parse(localStorage.getItem('users') || '[]')
+
+const initialState = { users: users }
 
 export const storeReducer = (state = initialState, action) => {
     switch(action.type) {
         case StoreAction.add:
-            let newState = {...state, users: [...state.users, ...[action.payload]]}
-            delete newState.tmpUser
-            return newState
+            return {...state, users: [...state.users, ...[action.payload]]}
             
-        case StoreAction.tmpUser:
-            return {...state, tmpUser: action.payload}
-
         default:
             return state
     }

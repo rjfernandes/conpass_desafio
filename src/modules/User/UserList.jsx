@@ -1,27 +1,36 @@
 import React from 'react'
 import { ConpassLayout, ConpassButton, ConpassAvatar } from '../../components/ConpassLibrary'
 import { connect } from 'react-redux'
+import Constants from '../../constants/Constants'
 import moment from 'moment'
 
 class UserList extends React.Component {
     state = {
+        orderField: 'createdAt',
         isOrderDesc: true,
     }
 
-    formatDate = strDate => moment(strDate).format('MMM D, YYYY, HH:mm')
+    formatDate = strDate => moment(strDate).format(Constants.displayMask)
 
-    usersOrderDesc = () => this.props.users.sort((bf, af) => moment(af.createAt).isSame(moment(bf.createAt)) ? 
-                                (af.index > bf.index ? 1 : -1) :
-                                moment(af.createAt).isAfter(moment(bf.createAt)) ? 1 : -1
-                            )
+    setOrder = field => {
+        if (this.state.orderField !== field) {
+            this.setState({ orderField: field })
+        }
+        else {
+            this.setState( { isOrderDesc: !this.state.isOrderDesc })
+        }
+    }
 
-    usersOrderAsc = () => this.props.users.sort((bf, af) => moment(af.createAt).isSame(moment(bf.createAt)) ? 
-                                (af.index < bf.index ? 1 : -1) :
-                                moment(af.createAt).isBefore(moment(bf.createAt)) ? 1 : -1
-                            )
+    orderFnc = (bf, af) => {
+        const orderField = this.state.orderField
+        const bfValue = orderField === 'firstName' ? `${bf.firstName} ${bf.lastName}` : bf[orderField]
+        const afValue = orderField === 'firstName' ? `${af.firstName} ${af.lastName}` : af[orderField]
+        return (this.state.isOrderDesc ? afValue > bfValue : afValue < bfValue) ? 1 : -1
+    }
 
     render() {
-        const users = (this.state.isOrderDesc ? this.usersOrderDesc : this.usersOrderAsc)()
+        const users = this.props.users.sort(this.orderFnc)
+        const orderField = this.state.orderField
 
         return (
             <ConpassLayout
@@ -30,17 +39,17 @@ class UserList extends React.Component {
                 className="userList"
             >
                 
-                <table className='table'>
+                <table className="table">
                     <thead>
-                        <tr className='userListHeader'>
+                        <tr className="userListHeader">
                             <th colSpan={2}>
-                                <div className="text">
-                                    Full Name
-                                </div>
+                                <a className="text link" onClick={() => this.setOrder('firstName')}>
+                                    Full Name { orderField === 'firstName' && <i className={`orderIcon fa ${this.state.isOrderDesc ? 'fa-caret-down' : 'fa-caret-up'}`}></i> }
+                                </a>
                             </th>
-                            <th className='userListSmallColumn'>
-                                <a className="text link" onClick={() => this.setState( { isOrderDesc: !this.state.isOrderDesc })}>
-                                    Created at <i className={`fa ${this.state.isOrderDesc ? 'fa-caret-down' : 'fa-caret-up'}`}></i>
+                            <th className="userListSmallColumn">
+                                <a className="text link" onClick={() => this.setOrder('createdAt')}>
+                                    Created at { orderField === 'createdAt' && <i className={`orderIcon fa ${this.state.isOrderDesc ? 'fa-caret-down' : 'fa-caret-up'}`}></i> }
                                 </a>
                             </th>
                         </tr>

@@ -1,19 +1,33 @@
 $darkGray: #4a4a4a;
+$lightGray: #eaeaea;
 $lightBlue: #12c1c7;
+$lightGreen: #30cf94;
 $darkBlue: #0e9a9f;
 $bkgRoundColor: #e8e8e8;
+$errorColor: #da3f52;
+
+
+$stepperFull: #b8e986;
+$stepperEmpty: $bkgRoundColor;
 
 /**
  *  Base Conpass Layout
  */
+
+a.link {
+    cursor: pointer;
+}
 
  div.conpassLayout {
     .logoHeader {
         text-align: center;
         padding: 3em 0;
     }
+    .whiteSection {
+        background: white;
+    }
+
     .graySection {
-        background: linear-gradient(#f2f2f2,#f9f9f9 );
 
         .topBottomMargins {
             margin: 3.5em 0 2em 0;
@@ -21,11 +35,10 @@ $bkgRoundColor: #e8e8e8;
 
         .body {
             padding: 2em 1em;
-            height: 1000px;
             .title {
                 letter-spacing: -1px;
                 font-weight: 300;
-                font-size: 34px;
+                font-size: 40px;
                 color: $darkGray;
             }
             .center {
@@ -60,7 +73,7 @@ $bkgRoundColor: #e8e8e8;
     font-size: 18px;
     padding: 10px 30px;
     text-transform: uppercase;  
-    background-color: #30cf94;
+    background-color: $lightGreen;
 }
 
 .disabledButton {
@@ -84,7 +97,7 @@ $bkgRoundColor: #e8e8e8;
 */
 
 .errorField {
-    color: #da3f52;
+    color: $errorColor;
     font-style: italic;
 }
 
@@ -100,8 +113,31 @@ $bkgRoundColor: #e8e8e8;
     justify-content: center;
     .text {
         color: $darkGray;
-        text-align: center;
         font-size: 14px;
+    }
+}
+
+.conpassUploadAvatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position:relative;
+    padding: 20px;
+
+    .text {
+        color: $darkGray;
+        z-index: 1;
+        text-shadow: -1px 0 $lightGray, 0 1px $lightGray, 1px 0 $lightGray, 0 -1px $lightGray;
+    }
+
+    .backgroundImage {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .fileUpload {
+        display:none;
     }
 }
 
@@ -111,7 +147,6 @@ $bkgRoundColor: #e8e8e8;
 
  .conpassStepper {
     position: relative;
-    // background: red;
     height: 46px;
     overflow: hidden;
 
@@ -141,11 +176,13 @@ $bkgRoundColor: #e8e8e8;
     }
 
     .full {
-        background: #b8e986; 
+        background: $stepperFull; 
+        font-weight: bold;
+        font-size: 1.3em;
     }
 
     .empty {
-        background: $bkgRoundColor;
+        background: $stepperEmpty;
     }
 
  }

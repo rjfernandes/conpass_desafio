@@ -4,31 +4,47 @@
 @import 'components';
 
 $darkGray: #4a4a4a;
+$middleGray: #9b9b9b;
 $lightBlue: #12c1c7;
 $darkBlue: #0e9a9f;
+$disabledColor: #ddd;
+$startGradientColor: #f2f2f2;
+$endGradientColor: #f9f9f9;
+
+html {
+    height: 100%;
+}
 
 body {
     font-family: 'Roboto', sans-serif;
+    background: linear-gradient( $startGradientColor, $endGradientColor );
+    background-repeat: no-repeat;
 }
 
 /**
  *  User List 
  */
 .userList {
+    table {
+        tr {
+            border-bottom: 2px solid $disabledColor;  
+        }
+    }
     tr.userListHeader {
         th {
             border-top: none;
             font-size: 15px;
             font-weight: bold;
             
+            .orderIcon {
+                margin-left: 8px;
+                color: $middleGray;
+            }
+
             .text {
                 color: $darkBlue;
             }
 
-            .link {
-                cursor: pointer;
-            }
-            
             &.userListSmallColumn {
                 width: 180px;
             }
@@ -78,7 +94,11 @@ body {
             position: absolute;
             left: 0;
             top: 14px;
+            font-weight: 100;
             color: $darkGray;
+            i {
+                font-weight: normal;
+            }
             &:hover {
                 color: $darkGray;
                 text-decoration: none;
