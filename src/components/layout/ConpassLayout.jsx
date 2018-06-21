@@ -1,7 +1,8 @@
 import React from 'react'
 import logo from '../../assets/img/logo.png'
+import { PropTypes } from 'prop-types'
 
-export default props => (
+const ConpassLayout = props => (
     <div className={`conpassLayout ${props.className || ''}`}>
         <div className="whiteSection">
             <div className='logoHeader container'>
@@ -26,3 +27,12 @@ export default props => (
         </div>
     </div>
 )
+
+ConpassLayout.propTypes = {
+    title: PropTypes.string.isRequired,
+    isTitleCentered: PropTypes.bool,
+    headerView: PropTypes.element,
+    children: PropTypes.element.isRequired,
+}
+
+export default ConpassLayout

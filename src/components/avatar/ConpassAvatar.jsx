@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const ConpassAvatar = props => {
+class ConpassAvatar extends React.Component {
 
-    const getInitials = value => {
+    getInitials = value => {
         const partsValue = (value || '').trim().toUpperCase().split(' ')
 
         const firstPart = partsValue[0]
@@ -17,24 +17,32 @@ const ConpassAvatar = props => {
         return `${firstPart.substring(0, 1)}${lastPart.substring(0, 1)}`
     }
 
-    const style = {...{width: props.width, height: props.width }, ...props.style }
-    const className = `avatarImage ${props.className || ''}`
+    render() {
+        const props = this.props
+        const style = {...{width: props.width, height: props.width }, ...props.style }
+        const className = `avatarImage ${props.className || ''}`
 
-    if (props.image) {
-        return <img className={className} style={style} alt="" src={props.image} />
+        if (props.image) {
+            return <img className={className} style={style} alt="" src={props.image} />
+        }
+
+        const initials = this.getInitials(props.value)
+
+        return ( 
+            <div className={className} style={style}>
+                <div className="text" style={{ fontSize: props.width * 0.5}}>{ initials }</div>
+            </div>
+        )
     }
-
-    const initials = getInitials(props.value)
-
-    return ( 
-        <div className={className} style={style}>
-            <div className="text" style={{ fontSize: props.width * 0.5}}>{ initials }</div>
-        </div>
-    )
 }
 
 ConpassAvatar.propTypes = {
-    width: PropTypes.number
+    width: PropTypes.number.isRequired,
+    image: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.object,
+            ]),
+    value: PropTypes.string,
 }
 
 export default ConpassAvatar

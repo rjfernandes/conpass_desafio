@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
-export default props => {
+const ConpassButton = props => {
     const newProps = {...props}
     delete newProps.isBlue
     delete newProps.to
@@ -22,3 +23,12 @@ export default props => {
         </button>
     )
 }
+
+ConpassButton.propTypes = {
+    isBlue: PropTypes.bool,
+    disabled: PropTypes.bool,
+    to: PropTypes.string,
+    icon: PropTypes.string,
+}
+
+export default ConpassButton

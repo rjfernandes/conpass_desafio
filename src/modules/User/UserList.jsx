@@ -1,17 +1,23 @@
 import React from 'react'
 import { ConpassLayout, ConpassButton, ConpassAvatar } from '../../components/ConpassLibrary'
 import { connect } from 'react-redux'
-import Constants from '../../constants/Constants'
-import moment from 'moment'
+import { formatDate } from '../../utils/utils'
 
-class UserList extends React.Component {
+export class UserList extends React.Component {
+
+    /**
+     * Campo inicial para ordenação
+     */
     state = {
         orderField: 'createdAt',
         isOrderDesc: true,
     }
 
-    formatDate = strDate => moment(strDate).format(Constants.displayMask)
-
+    /**
+     * Ordenação das colunas
+     * Se o campo for o mesmo do state, inverte a ordem
+     * Se for diferente, ajusta para o novo campo com a ordenação atual
+     */
     setOrder = field => {
         if (this.state.orderField !== field) {
             this.setState({ orderField: field })
@@ -21,6 +27,9 @@ class UserList extends React.Component {
         }
     }
 
+    /**
+     * Função para ordenação dos usuários 
+     */
     orderFnc = (bf, af) => {
         const orderField = this.state.orderField
         const bfValue = orderField === 'firstName' ? `${bf.firstName} ${bf.lastName}` : bf[orderField]
@@ -28,8 +37,13 @@ class UserList extends React.Component {
         return (this.state.isOrderDesc ? afValue > bfValue : afValue < bfValue) ? 1 : -1
     }
 
+    /**
+     * Lista dos usuários ordenada
+     */
+    sortedUsers = () => (this.props.users || []).sort(this.orderFnc)
+
     render() {
-        const users = this.props.users.sort(this.orderFnc)
+        const users = this.sortedUsers()
         const orderField = this.state.orderField
 
         return (
@@ -67,7 +81,7 @@ class UserList extends React.Component {
                                                             {user.firstName} {user.lastName}
                                                         </td>
                                                         <td className="middleCell createAtCell">
-                                                            {this.formatDate(user.createdAt)}
+                                                            {formatDate(user.createdAt)}
                                                         </td>
                                                     </tr>
                                     )
@@ -87,4 +101,4 @@ class UserList extends React.Component {
     }
 }
 
-export default connect(store => store)(UserList)
+export default connect(state => ({...state}))(UserList)

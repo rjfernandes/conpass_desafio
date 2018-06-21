@@ -5,20 +5,34 @@ import { connect } from 'react-redux'
 import StoreAction from '../../store/StoreAction'
 import moment from 'moment'
 
-class UserPicture extends React.Component {
+export class UserPicture extends React.Component {
 
     state = {}
 
+    /**
+     * Coloca a imagem selecionada no state
+     */
     onPickedImage = image => this.setState({ image: image } ) 
 
+    /**
+     * Objeto contendo a data de criação e a imagem (se escolhida)
+     */
+    userToBeSaved = () => ({...JSON.parse(localStorage.getItem('tmpUser')), ...(this.state.image ? { image: this.state.image } : {}), createdAt: moment().format() })
+
+    /**
+     * Salvar e retornar para a lista de usuários
+     */
     save = () => {
-        const user = {...JSON.parse(localStorage.getItem('tmpUser')), ...(this.state.image ? { image: this.state.image } : {}), createdAt: moment().format() }
-        this.props.dispatch({ type: StoreAction.add, payload: user })
+        this.props.dispatch({ type: StoreAction.add, payload: this.userToBeSaved() })
         localStorage.removeItem('tmpUser')
-        this.props.history.push('/')
+        this.props.history && this.props.history.push('/')
     }
 
-    componentDidMount = () => !localStorage.getItem('tmpUser') && this.props.history.push('/user/add')
+    /**
+     * Verifica se existe usuário temporário no storage
+     * Caso não exista, direciona para a tela de adicionar usuário
+     */
+    componentDidMount = () => !localStorage.getItem('tmpUser') && this.props.history && this.props.history.push('/user/add')
 
     render() {
         return (
@@ -49,4 +63,4 @@ class UserPicture extends React.Component {
 }
 
 
-export default connect(state => state)(UserPicture)
+export default connect(state => ({...state}))(UserPicture)

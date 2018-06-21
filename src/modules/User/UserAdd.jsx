@@ -1,22 +1,32 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { ConpassLayout, ConpassButton, ConpassInput, ConpassStepper } from '../../components/ConpassLibrary'
+import { isEmailValid } from '../../utils/utils'
 
-class UserAdd extends React.Component {
+export default class UserAdd extends React.Component {
     state = {}
 
-    fields = ['firstName', 'lastName', 'companyName', 'email']
+    fields = ['firstName', 'lastName', 'companyName']
 
+    /**
+     * Busca o campo e sua validação dentro do state
+     */
     getField = field => ( this.state[field] || { value: '', isValid: false })
 
+    /**
+     * Altera o valor do campo dentro do state
+     */
     changeValue = field => value => this.setState({ [field] : {...this.getField(field), value: value } })
+
+    /**
+     * Altera o isValid do campo dentro do state
+     */
     setIsValid = field => boolValue => this.setState({ [field] : {...this.getField(field), isValid: boolValue } })
 
     /**
      * Checa se cada um dos campos inseridos são válidos
      * Só passa se todos forem válidos
      */
-    isFormValid = () => this.isSamePassword() && this.fields.reduce((acc, field) => acc && this.getField(field).isValid && this.getField(field).value.trim() !== '' )
+    isFormValid = () => this.isSamePassword() && this.isEmailValid() && this.fields.reduce((acc, field) => acc && this.getField(field).isValid && this.getField(field).value.trim() !== '' )
 
     /**
      * Senhas
@@ -45,21 +55,36 @@ class UserAdd extends React.Component {
     }
 
     /**
+     * Email
+     */
+    isEmailValid = () => isEmailValid(this.getField('email').value)
+
+    /**
      * Salvar as infos
      */
     save = () => {
         let user = {}
-        const fields = [...this.fields, ...['password', 'repeatPassword']]
+        const fields = [...this.fields, ...['email', 'password', 'repeatPassword']]
         fields.forEach(field => user = {...user, [field]: this.getField(field).value})
         localStorage.setItem('tmpUser', JSON.stringify(user))
-        this.props.history.push('/user/picture')
+        this.props.history && this.props.history.push('/user/picture')
     }
 
-    componentDidMount = () => {
-        const tmpUser = JSON.parse(localStorage.getItem('tmpUser') || '{}')
+    /**
+     * Monta o objeto na estrutura para verificação do form e armazena no state
+     */
+    mountUserIntoState = tmpUser => {
         let user = {}
         Object.keys(tmpUser).forEach(key => user[key] = { value: tmpUser[key], isValid: true } )
         this.setState(user)
+    }
+
+    /**
+     * Busca o usuário temporário armazenado no localStorage e envia para montagem do state
+     */
+    componentDidMount = () => {
+        const tmpUser = JSON.parse(localStorage.getItem('tmpUser') || '{}')
+        this.mountUserIntoState(tmpUser)
     }
 
     render = () => {
@@ -75,7 +100,6 @@ class UserAdd extends React.Component {
                         current={1}
                         total={2}
                     />
-
                 }
             >
                 <form onSubmit={this.save} autoComplete='on'>
@@ -127,7 +151,7 @@ class UserAdd extends React.Component {
                             <ConpassInput
                                 title="Password"
                                 type="password"
-                                blankErrorMessage={!hasPassword && "Password can't be blank"}
+                                blankErrorMessage={hasPassword ? "" : "Password can't be blank"}
                                 value={this.getField('password').value}
                                 onChangeText={this.changeValue('password')}
                                 afterValidateField={this.setIsValid('password')}
@@ -141,7 +165,7 @@ class UserAdd extends React.Component {
                             <ConpassInput
                                 title="Repeat password"
                                 type="password"
-                                blankErrorMessage={!hasRepeatPassword && "Repeat password can't be blank"}
+                                blankErrorMessage={hasRepeatPassword ? "" : "Repeat password can't be blank"}
                                 value={this.getField('repeatPassword').value}
                                 onChangeText={this.changeValue('repeatPassword')}
                                 afterValidateField={this.setIsValid('repeatPassword')}
@@ -162,5 +186,3 @@ class UserAdd extends React.Component {
         )
     }
 }
-
-export default connect(state => state)(UserAdd)

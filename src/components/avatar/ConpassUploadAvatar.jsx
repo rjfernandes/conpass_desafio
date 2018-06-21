@@ -1,5 +1,6 @@
 import React from 'react'
 import ConpassAvatar from './ConpassAvatar'
+import { PropTypes } from 'prop-types'
 
 const ConpassUploadAvatar = props => {
     let fileRef = null
@@ -31,6 +32,14 @@ const ConpassUploadAvatar = props => {
             <input ref={ref => fileRef = ref} className="fileUpload" type="file" onChange={convertPickedImageToBase64} accept="image/*" />
         </a>
     )
+}
+
+ConpassUploadAvatar.propTypes = {
+    image: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.object,
+            ]),
+    width: PropTypes.number.isRequired
 }
 
 export default ConpassUploadAvatar

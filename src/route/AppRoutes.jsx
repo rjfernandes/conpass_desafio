@@ -1,13 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import createBrowserHistory from 'history/createBrowserHistory'
-import { Router, Switch, Route } from 'react-router'
+import { Switch, Route } from 'react-router'
+import { BrowserRouter } from 'react-router-dom'
 import routes from './Routes'
 
-const history = createBrowserHistory()
-
 const AppRoute = props => (
-    <Router history={history}>
+    <BrowserRouter>
         <Switch>
             { routes.map(route => <Route 
                                     key={route.path} 
@@ -17,7 +15,7 @@ const AppRoute = props => (
                                   /> 
                         )}
         </Switch>
-    </Router>   
+    </BrowserRouter>   
 )
 
-export default connect(state => state)(AppRoute)
+export default connect(state => ({}))(AppRoute)

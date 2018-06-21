@@ -1,31 +1,30 @@
 import React from 'react'
+import { PropTypes } from 'prop-types'
+import { isEmailValid } from '../../utils/utils'
 
-export default class ConpassInput extends React.Component {
+class ConpassInput extends React.Component {
 
     state = { isInvalid: false, isEmailInvalid: false }
 
-    checkValue = event => {
+    changeValue = event => {
         const value = event.target.value
         this.props.onChangeText && this.props.onChangeText(value)
     }
 
-    checkIfIsValid = () => {
-        const value = (this.props.value && this.props.value.trim()) || ''
-        const isEmailInvalid = value !== '' && this.props.type === 'email' && !this.isValidEmail(value)
-        const isInvalid = value === ''
+    onCheckIfIsValid = () => {
+        const { isInvalid, isEmailInvalid } = this.checkIfIsValid()
         this.setState({ isInvalid: isInvalid, isEmailInvalid: isEmailInvalid })
         this.props.afterValidateField && this.props.afterValidateField(!isInvalid && !isEmailInvalid)
     }
 
-    /**
-     * Email
-     */
-    isValidEmail = email => {
-        if (email === '') {
-            return false
+    checkIfIsValid = () => {
+        const value = (this.props.value && this.props.value.trim()) || ''
+        const isEmailInvalid = value !== '' && this.props.type === 'email' && !isEmailValid(value)
+        const isInvalid = value === ''
+        return {
+            isInvalid: isInvalid, 
+            isEmailInvalid: isEmailInvalid 
         }
-        const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        return emailPattern.test(email)
     }
 
     render = () => {
@@ -45,19 +44,19 @@ export default class ConpassInput extends React.Component {
                     autoComplete={props.title && props.title.replace(/ /g, '-').toLowerCase()}
                     placeholder={props.placeholder && `i.e ${props.placeholder}`} 
                     className={`form-control ${props.className || 'blueBorderInput'}`}
-                    onChange={this.checkValue}
-                    onBlur={this.checkIfIsValid}
+                    onChange={this.changeValue}
+                    onBlur={this.onCheckIfIsValid}
                 />
 
                 { this.props.extraView && this.props.extraView.after }
                
-                { this.state.isInvalid && this.props.blankErrorMessage && 
+                { this.state.isInvalid && (this.props.blankErrorMessage !== '') && 
                     <small className="form-text errorField">
                         {this.props.blankErrorMessage}
                     </small> 
                 }
                
-                { this.state.isEmailInvalid && this.props.invalidEmailMessage && 
+                { this.state.isEmailInvalid && (this.props.invalidEmailMessage !== '') && 
                     <small className="form-text errorField">
                         {this.props.invalidEmailMessage}
                     </small> 
@@ -67,3 +66,15 @@ export default class ConpassInput extends React.Component {
         )
     }
 }
+
+ConpassInput.propTypes = {
+    title: PropTypes.string.isRequired,
+    blankErrorMessage: PropTypes.string,
+    invalidEmailMessage: PropTypes.string,
+}
+ConpassInput.defaultProps = {
+    blankErrorMessage: '',
+    invalidEmailMessage: '',
+}
+
+export default ConpassInput 
